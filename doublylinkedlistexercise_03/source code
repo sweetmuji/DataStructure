@@ -1,0 +1,121 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef int element;
+typedef struct ListNode {
+    element data;
+    struct ListNode* link;
+} ListNode;
+
+ListNode* insert_first(ListNode* head, element data)
+{
+    ListNode* p = (ListNode*)malloc(sizeof(ListNode));
+    p->data = data;
+    
+    if(p == NULL) {
+        printf("MEMORY IS FULL!!\n");
+        exit(1);
+    }
+    
+    if(head == NULL)
+    {
+        p->link = p;
+        head = p;
+    }
+    else
+    {
+        p->link = head->link;
+        head->link = p;
+    }
+    
+    return head;
+}
+
+ListNode* insert_last(ListNode* head, element data)
+{
+    ListNode* p = (ListNode*)malloc(sizeof(ListNode));
+    p->data = data;
+    
+    if(p == NULL) {
+        printf("MEMORY IS FULL!!\n");
+        exit(1);
+    }
+    
+    if(head == NULL)
+    {
+        p->link = p;
+        head = p;
+    }
+    else
+    {
+        p->link = head->link;
+        head->link = p;
+        head = p;
+    }
+    
+    return p;
+}
+
+void free_list(ListNode* head)
+{
+    if (head == NULL) return;
+    
+    ListNode* p = head->link; // 첫 노드 가리키게
+    ListNode* temp;
+    
+    for(;p!=head;free(temp);) {
+        temp = p;
+        p = p->link;
+    }
+    
+    free(head);
+}
+
+void print_list(ListNode* head)
+{
+    if(head == NULL) return;
+    
+    ListNode* p = head->link;
+    
+    do {
+        printf("%d->", p->data);
+        p = p->link;
+    } while(p != head->link);
+}
+
+ListNode* search(ListNode* head, element data)
+{
+    if(head == NULL) {
+        printf("LIST IS EMPTY!\n");
+        return NULL;
+    }
+    
+    ListNode* p = head->link; // 첫 노드를 가리키게
+    
+    do {
+        if(p->data == data) {
+            return p;
+        }
+        else {
+            p = p->link;
+        }
+    } while(p!=head->link);
+    
+    return NULL;
+}
+
+int get_size(ListNode* head)
+{
+    int i = 0;
+    
+    if(head == NULL) return 0;
+    
+    ListNode* p = head->link;
+    
+    do {
+        i++;
+        p = p->link;
+    } while(p!=head->link);
+    
+    return i;
+}
